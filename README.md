@@ -2,11 +2,11 @@
 
 ## Objetivos
 
-O projeto tem como objetivo comparar o desempenho do ambiente multi-agent [Flatlands](https://flatland.aicrowd.com/intro.html) utilizando os algoritmos DQN (Deep Q-Network) e PPO (Proximal Policy Optimization).
+O projeto tem como objetivo comparar o desempenho do ambiente multi-agent [Flatlands](https://flatland.aicrowd.com/intro.html) utilizando os algoritmos DQN (Deep Q-Network) e PPO (Proximal Policy Optimization) com diferentes números de agentes.
 
 ## Métodos
 
-Para encontrar os resultados serão realizados treinamentos com diferentes números de trens para cada algoritmo e a partir da curva de aprendizado resultante será comparado o desempenho dos algoritmos em diferentes cenários. Para o treinamento utilizaremos a biblioteca RLib.
+Para encontrar os resultados serão realizados treinamentos com diferentes números de trens(agentes) para cada algoritmo e a partir da curva de aprendizado resultante será comparado o desempenho dos algoritmos em diferentes cenários. Também será comparado o agente pós-treinamento verificar qual o tempo gasto para o agente chegar no estado final, e para isso serão executados vários testes e comparados os resultados, verificando min, max e média. Para o treinamento utilizaremos a biblioteca RLib.
 
 ## Resultados esperados
 
