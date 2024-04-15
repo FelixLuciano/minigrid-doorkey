@@ -15,3 +15,4 @@ Buscar entender qual a influência do número de agentes no tempo de convergênc
 ## Referências
 
 - [Flatlands](https://flatland.aicrowd.com/intro.html)
+- [RLib](https://docs.ray.io/en/latest/rllib/index.html)
