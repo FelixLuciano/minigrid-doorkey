@@ -15,4 +15,4 @@ Buscar entender a diferença entre os algoritmos para o treinamento do ambiente 
 ## Referências
 
 - [Minigrid](https://minigrid.farama.org/environments/minigrid/DoorKeyEnv/)
-- [Stable Baselines]([https://docs.ray.io/en/latest/rllib/index.html](https://stable-baselines3.readthedocs.io/en/master/))
+- [Stable Baselines](https://docs.ray.io/en/latest/rllib/index.html](https://stable-baselines3.readthedocs.io/en/master/ )
