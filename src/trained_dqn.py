@@ -1,8 +1,8 @@
 import gymnasium as gym
-from minigrid.wrappers import ImgObsWrapper, ActionBonus
-from stable_baselines3 import PPO
+from minigrid.wrappers import ImgObsWrapper
+from stable_baselines3 import DQN
 
-model = PPO.load("./src/results/ppo_minigrid")
+model = DQN.load("./src/results/dqn_minigrid")
 
 env = gym.make("MiniGrid-DoorKey-8x8-v0", render_mode="human")
 env = ImgObsWrapper(env)

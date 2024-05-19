@@ -15,7 +15,7 @@ env = ActionBonus(env)
 
 model = PPO("CnnPolicy", env, policy_kwargs=policy_kwargs, verbose=1)
 model.learn(50_000)
-model.save("./results/ppo_minigrid")
+model.save("./src/results/ppo_minigrid")
 
 
 mean_reward, std_reward = evaluate_policy(model, model.get_env(), n_eval_episodes=10)
