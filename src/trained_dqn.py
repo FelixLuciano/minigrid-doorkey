@@ -2,13 +2,13 @@ import gymnasium as gym
 from minigrid.wrappers import ImgObsWrapper
 from stable_baselines3 import DQN
 
-model = DQN.load("./src/results/dqn_minigrid")
+model = DQN.load("./results/dqn/dqn_minigrid")
 
 env = gym.make("MiniGrid-DoorKey-8x8-v0", render_mode="human")
 env = ImgObsWrapper(env)
 
 
-(obs,_) = env.reset()
+(obs,_) = env.reset(seed=42)
 for i in range(1000):
     action, _state = model.predict(obs)
     obs, reward, done, truncated, info = env.step(action)
