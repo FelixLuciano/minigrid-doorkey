@@ -4,7 +4,7 @@ from stable_baselines3 import PPO
 
 model = PPO.load("./results/ppo/ppo_minigrid")
 
-env = gym.make("MiniGrid-DoorKey-8x8-v0", render_mode="human")
+env = gym.make("MiniGrid-DoorKey-6x6-v0", render_mode="human")
 env = ImgObsWrapper(env)
 
 
