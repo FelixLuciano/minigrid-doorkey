@@ -1,4 +1,4 @@
-from minigrid.wrappers import ImgObsWrapper, ActionBonus
+from minigrid.wrappers import ImgObsWrapper
 from stable_baselines3 import PPO
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.logger import configure
@@ -6,7 +6,7 @@ from minigrid.wrappers import PositionBonus
 from MinigridFeaturesExtractor import MinigridFeaturesExtractor
 import gymnasium as gym
 
-from reward_wrapper import PickKey
+from CustomRewardWrapper import CustomRewardWrapper
 
 results_path = "./results/ppo"
 
@@ -18,9 +18,8 @@ policy_kwargs = dict(
 )
 
 env = gym.make("MiniGrid-DoorKey-6x6-v0", render_mode="rgb_array")
-_ = env.reset(seed=42)
 env = ImgObsWrapper(env)
-env = PickKey(env)
+env = CustomRewardWrapper(env)
 env = PositionBonus(env)
 
 
