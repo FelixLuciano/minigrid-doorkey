@@ -1,9 +1,11 @@
-from minigrid.wrappers import ImgObsWrapper, ActionBonus
+from minigrid.wrappers import ImgObsWrapper, PositionBonus
 from stable_baselines3 import DQN
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.logger import configure
 from MinigridFeaturesExtractor import MinigridFeaturesExtractor
 import gymnasium as gym
+
+from CustomRewardWrapper import CustomRewardWrapper
 
 results_path = "./results/dqn"
 
@@ -14,13 +16,20 @@ policy_kwargs = dict(
     features_extractor_kwargs=dict(features_dim=128),
 )
 
-env = gym.make("MiniGrid-DoorKey-8x8-v0", render_mode="rgb_array")
-env.reset(seed=42)
+env = gym.make("MiniGrid-DoorKey-6x6-v0", render_mode="rgb_array")
 env = ImgObsWrapper(env)
-env = ActionBonus(env)
+env = CustomRewardWrapper(env)
+env = PositionBonus(env)
 
-model = DQN("CnnPolicy", env, policy_kwargs=policy_kwargs, verbose=1)
-model.learn(50_000, progress_bar=True)
+model = DQN("CnnPolicy", 
+            env, 
+            policy_kwargs=policy_kwargs, 
+            verbose=0,
+            exploration_fraction=0.001,
+            exploration_final_eps=0.5)
+
+model.set_logger(new_logger)
+model.learn(500_000, progress_bar=True)
 model.save(results_path + "/dqn_minigrid")
 
 
