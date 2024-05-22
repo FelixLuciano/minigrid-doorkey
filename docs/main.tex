@@ -208,7 +208,7 @@ A função de recompensa é definida no domínio contínuo do intervalo \([0, 1]
 
 %Para encontrar os resultados serão realizados treinamentos com diferentes números de episódios para cada algoritmo. Também será realizada a modificação do reward para que o agente consiga o reward não só chegando ao final mas realizando as ações necessárias para chegar lá, comparando os resultados.
 
-Para conseguir comparar bem o desempenho dos dois algoritmos no ambiente, será analiado o crescimento da recompensa de um agente treinado em cada um desses algoritmos, utilizando a MlpPolicy, e 200000 passos de aprendizado. O ambiente utilizado dentro do Minigrid - Doorkey será o "MiniGrid-DoorKey-6x6-v0", que já oferece uma complexidade satisfatória para o agente. Mas, para obter uma comparação satisfatória, é necessário primeiramente alterar a função recompensa de modo a ficar mais nítido o aprendizado de cada agente.
+Para conseguir comparar bem o desempenho dos dois algoritmos no ambiente, será analiado o crescimento da recompensa de um agente treinado em cada um desses algoritmos, utilizando a MlpPolicy, e 200.000 passos de aprendizado. O ambiente utilizado dentro do Minigrid - Doorkey será o "MiniGrid-DoorKey-6x6-v0", que já oferece uma complexidade razoável para o agente. Mas, para obter uma comparação satisfatória, é necessário primeiramente alterar a função recompensa de modo a ficar mais nítido o aprendizado de cada agente.
 
 \begin{info}[frametitle=Atenção]
     Para treinamento será utilizado a biblioteca \textit{stable baselines}.
@@ -238,7 +238,7 @@ Agora, a função recompensa é definida no domínio contínuo do intevalo [-0.2
 
 Após a configuração dos rewards, vem a etapa de treinamento dos agentes. O setup é feito da seguinte maneira para o agente DQN:
 \lstinputlisting[caption=Modelo DQN, language=python]{assets/train_dqn.py}
-E paara o modelo PPO:
+E para o modelo PPO:
 \lstinputlisting[caption=Modelo PPO, language=python]{assets/train_ppo.py}
 
 \section{Resultados}
