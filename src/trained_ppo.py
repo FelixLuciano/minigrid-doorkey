@@ -3,7 +3,7 @@ from minigrid.wrappers import ImgObsWrapper, PositionBonus
 from stable_baselines3 import PPO
 from CustomRewardWrapper import CustomRewardWrapper
 
-model = PPO.load("./results/ppo/ppo_minigrid")
+model = PPO.load("./results/ppo/0/ppo_minigrid")
 
 env = gym.make("MiniGrid-DoorKey-6x6-v0", render_mode="human")
 env = ImgObsWrapper(env)
