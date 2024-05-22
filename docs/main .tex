@@ -65,7 +65,7 @@
 %----------------------------------------------------------
 
 \begin{abstract}
-    Neste projeto foi desenvolvido e validado um agente capaz de atuar no ambiente Door Key. O método de treinamento empregado foi ... Os resultados obtidos foram ...
+    Neste projeto foi desenvolvido e validado um agente capaz de atuar no ambiente Door Key. O método de treinamento empregado foi modificar o ambiente para receber recompensas em estágios intermediários, como abrir a porta e pega a chave. Os resultados obtidos foram que utilizando o DQN o agente não foi capaz de aprender, enquanto com o PPO e com as modificações no ambiente, o agente conseguiu aprender.
 \end{abstract}
 
 %----------------------------------------------------------
@@ -184,12 +184,6 @@ O espaço de observação é descrito por um dicionário contendo a direção do
     \end{tabular}
 \end{table}
 
-\begin{itemize}
-    \item \textbf{ID do objeto} contido no latrilho atual, descrito como na tabela  \ref{tab:objects};
-    \item \textbf{ID da cor} do latrilho atual, descrito como na tabela  \ref{tab:colors};
-    \item \textbf{ID do estado} do objeto condito no latrilho atual, descrito como na tabela  \ref{tab:states}.
-\end{itemize}
-
 O espaço de ação é discreto com ações de movimento e poucas interações com elementos do ambiente. O espaço de ação é implementado conforme especificado na tabela \ref{tab:actions}.
 
 A função de recompensa é definida no domínio contínuo do intervalo \([0, 1]\) e proporcional a razão entre o número de passos e o número máximo de passos permitido para o agente atingir o estado final com sucesso, caso contrário a recompensa é anulada. Esta razão é definida com maior rigor na equação \ref{ec:equation}.
@@ -206,20 +200,18 @@ A função de recompensa é definida no domínio contínuo do intervalo \([0, 1]
 
 \section{Método}
 
-%Para encontrar os resultados serão realizados treinamentos com diferentes números de episódios para cada algoritmo. Também será realizada a modificação do reward para que o agente consiga o reward não só chegando ao final mas realizando as ações necessárias para chegar lá, comparando os resultados.
-
-Para conseguir comparar bem o desempenho dos dois algoritmos no ambiente, será analiado o crescimento da recompensa de um agente treinado em cada um desses algoritmos, utilizando a MlpPolicy, e 200.000 passos de aprendizado. O ambiente utilizado dentro do Minigrid - Doorkey será o "MiniGrid-DoorKey-6x6-v0", que já oferece uma complexidade razoável para o agente. Mas, para obter uma comparação satisfatória, é necessário primeiramente alterar a função recompensa de modo a ficar mais nítido o aprendizado de cada agente.
+Para conseguir comparar bem o desempenho dos dois algoritmos no ambiente, será analisado o crescimento da recompensa de um agente treinado em cada um desses algoritmos, utilizando a MlpPolicy, e 200.000 passos de aprendizado. O ambiente utilizado dentro do Minigrid - Doorkey será o "MiniGrid-DoorKey-6x6-v0", que já oferece uma complexidade razoável para o agente. Mas, para obter uma comparação satisfatória, é necessário primeiramente alterar a função recompensa de modo a ficar mais nítido o aprendizado de cada agente.
 
 \begin{info}[frametitle=Atenção]
     Para treinamento será utilizado a biblioteca \textit{stable baselines}.
 \end{info}
 
-Inicialmente, para conseguir utilizar a biblioteca \textit{stable baselines}, foi necessário utilizar do ImgObsWrapper, que é um Wrapper específico do ambiente, que transforma a observação do enviroment em um formato de Imagem, próprio para interpretação da biblioteca. Junto a isso, foi necessário utilizar dois outros Wrappers que alterassem a recompensa entregue ao agente para que o treinamento pudesse ser realizado e analisado. Desses, um é o PositionBonusWrapper, que também é específico do ambiente Minigrid e permite a recompensa da exploração do agente, o outro é um Wrapper original feito pela equipe de forma para recompensar as ações intermediárias antes de chegar ao objetivo final.
+Inicialmente, para conseguir utilizar a biblioteca \textit{stable baselines}, foi necessário utilizar do \textit{ImgObsWrapper}, que é um \textit{Wrapper} específico do ambiente, que transforma a observação do \textit{environment} em um formato de Imagem, próprio para interpretação da biblioteca. Junto a isso, foi necessário utilizar dois outros \textit{Wrappers} que alterassem a recompensa entregue ao agente para que o treinamento pudesse ser realizado e analisado. Desses, um é o \textit{PositionBonusWrapper}, que também é específico do ambiente \textit{Minigrid} e permite a recompensa da exploração do agente, o outro é um \textit{Wrapper} original feito pela equipe de forma para recompensar as ações intermediárias antes de chegar ao objetivo final.
 
-O Wrapper orignal implementado tem o seguinte funcionamento:
+O \textit{Wrapper} orignal implementado tem o seguinte funcionamento:
 \lstinputlisting[caption=Código do Wrapper, language=python]{assets/CustomRewardWrapper.py}
 
-Agora, a função recompensa é definida no domínio contínuo do intevalo [-0.25, 3], levando em conta as ações pegar a chave e destrancar a porta, além de punir o número de passos do agente, isso na sua primeira parcela. O PositionBonusWrapper provê uma segunda parcela inversamente proporcional à raiz do número de vezes que uma determinada posição foi visitada. O cálculo da recompensa final pode ser visto nas esquações \ref{ec:equation2} e \ref{ec:equation3}.
+Agora, a função recompensa é definida no domínio contínuo do intervalo [-0.25, 3], levando em conta as ações pegar a chave e destrancar a porta, além de punir o número de passos do agente, isso na sua primeira parcela. O \textit{PositionBonusWrapper} provê uma segunda parcela inversamente proporcional à raiz do número de vezes que uma determinada posição foi visitada. O cálculo da recompensa final pode ser visto nas equações \ref{ec:equation2} e \ref{ec:equation3}.
 
 \begin{equation}
     \label{ec:equation2}
@@ -244,7 +236,7 @@ E para o modelo PPO:
 
 \section{Resultados}
 
-Através dos treinamentos foi possível obter a curva de aprendizagem mostrada na Figura \ref{fig:figure}. Através dela é possível notar que após 100000 episódios o PPO consegue convergir, o DQN não converge em nenhum momento. Também é possível notar que o reward começa alto em ambos e vai decaindo, até se estabilizar.
+Através dos treinamentos foi possível obter a curva de aprendizagem mostrada na Figura \ref{fig:figure}. Através dela é possível notar que após 100000 episódios o PPO consegue convergir, o DQN não converge em nenhum momento. Também é possível notar que o \textit{reward} começa alto em ambos e vai decaindo, até se estabilizar.
 
 \begin{figure}[htbp]
     \centering
@@ -257,7 +249,7 @@ Outro resultado que encontramos foi que mesmo treinando no ambiente 6x6 o treina
 
 \section{Considerações finais}
 
-\taustart{O} objetivo deste trabalho foi explorar o ambiente minigrid-doorkey, que possui características únicas, como o fato de ter um espaço de observação limitado e também depender de aleatoriedade, já que originalmente o agente só iria receber recompensa caso chegasse no final. Ao longo do desenvolvimento foi possível modificar o ambiente para que o agente tenha mais oportunidades de aprendizado, o que permitiu, através do algoritmo PPO, o agente aprender como chegar no objetivo.
+\taustart{O} objetivo deste trabalho foi explorar o ambiente \textit{Minigrid-Doorkey}, que possui características únicas, como o fato de ter um espaço de observação limitado e também depender de aleatoriedade, já que originalmente o agente só iria receber recompensa caso chegasse no final. Ao longo do desenvolvimento foi possível modificar o ambiente para que o agente tenha mais oportunidades de aprendizado, o que permitiu, através do algoritmo PPO, o agente aprender como chegar no objetivo.
 \addcontentsline{toc}{section}{References}
 \printbibliography
 
