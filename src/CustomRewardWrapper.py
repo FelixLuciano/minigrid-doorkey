@@ -11,13 +11,10 @@ class CustomRewardWrapper(Wrapper):
     def step(self, action):
         obs, reward, terminated, truncated, info = self.env.step(action)
 
-        # Custom reward logic
-        # Check if the agent picked up a key
         if action == self.unwrapped.actions.pickup and self.unwrapped.carrying and isinstance(self.unwrapped.carrying, Key) and not self.key_was_picked:
-            reward = 0.5  # Assign a reward for picking up the key
+            reward = 0.5
             self.key_was_picked = True
 
-        # Check if the agent opened a door
         elif action == self.unwrapped.actions.toggle:
             front_cell = self.unwrapped.grid.get(*self.unwrapped.front_pos)
 
@@ -31,10 +28,8 @@ class CustomRewardWrapper(Wrapper):
                     reward = -0.1
             else:
                 reward = -0.1
-        # Check if the agent reached the goal
         elif terminated and self.unwrapped.agent_pos == (self.unwrapped.width - 2, self.unwrapped.height - 2):
-            reward = 2  # Assign a reward for reaching the goal
+            reward = 2
         else:
-            reward = -0.1  # Small penalty for each step
-
+            reward = -0.1 
         return obs, reward, terminated, truncated, info
