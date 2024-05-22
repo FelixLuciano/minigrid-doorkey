@@ -1,12 +1,13 @@
+import gymnasium as gym
 import torch
 import torch.nn as nn
-import gymnasium as gym
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 
 
 class MinigridFeaturesExtractor(BaseFeaturesExtractor):
-    def __init__(self, observation_space: gym.Space, features_dim: int = 512, normalized_image: bool = False) -> None:
+    def __init__(self, observation_space: gym.Space, features_dim: int = 512, normalized_image: bool = False):
         super().__init__(observation_space, features_dim)
+
         n_input_channels = observation_space.shape[0]
         self.cnn = nn.Sequential(
             nn.Conv2d(n_input_channels, 16, (2, 2)),

@@ -1,5 +1,5 @@
-from minigrid.core.world_object import Door, Key, Goal
 from gymnasium import Wrapper
+from minigrid.core.world_object import Door, Goal, Key
 
 
 class CustomRewardWrapper(Wrapper):
@@ -7,7 +7,6 @@ class CustomRewardWrapper(Wrapper):
         super().__init__(env)
         self.key_was_picked = False
         self.door_was_unlocked = False
-
 
     def step(self, action):
         obs, reward, terminated, truncated, info = self.env.step(action)
@@ -21,6 +20,7 @@ class CustomRewardWrapper(Wrapper):
         # Check if the agent opened a door
         elif action == self.unwrapped.actions.toggle:
             front_cell = self.unwrapped.grid.get(*self.unwrapped.front_pos)
+
             if front_cell and isinstance(front_cell, Door):
                 if front_cell.is_locked and self.unwrapped.carrying and isinstance(self.unwrapped.carrying, Key) and not self.door_was_unlocked:
                     reward = 0.5  # Assign a reward for unlocking a door
