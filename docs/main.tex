@@ -225,6 +225,7 @@ Agora, a função recompensa é definida no domínio contínuo do intevalo [-0.2
     \label{ec:equation2}
     \text{NEW REWARD} =
     \begin{dcases}
+      -0.1,                      & \text{Por cada step}                       \\
         0.5,                        & \text{Pegar a chave ou destrancar a porta}     \\
         -0.25,                      & \text{Caso feche uma porta}                       \\
         2,                          & \text{Ao chegar ao destino final}
@@ -243,37 +244,20 @@ E para o modelo PPO:
 
 \section{Resultados}
 
-O objetido desta parrte do relatório é descrever os resultados obtidos. Durante a disciplina nós vimos as principais técnicas para mostrar o aprendizado do agente e o desempenho do mesmo para realizar a tarefa. Esta seção precisa mostrar dados quantitativos que descrevem isto: a curva de aprendizagem e as validações feitas depois do treinamento.
-
-Para apresentar os resultados obtidos com certeza a equipe terá que fazer uso de figuras, como a apresenta em \ref{fig:figure}.
+Através dos treinamentos foi possível obter a curva de aprendizagem mostrada na Figura \ref{fig:figure}. Através dela é possível notar que após 100000 episódios o PPO consegue convergir, o DQN não converge em nenhum momento. Também é possível notar que o reward começa alto em ambos e vai decaindo, até se estabilizar.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\columnwidth]{assets/example.pdf}
-    \caption{Exemplo de figura obtido a partir de \textit{PGFPlots - A LaTeX package to create plots}. [Online]. Available: \url{https://pgfplots.sourceforge.net/}).}
+    \includegraphics[width=0.8\columnwidth]{assets/plot.png}
+    \caption{Curva de aprendizado MiniGrid-6x6-v0, comparando DQN e PPO}
     \label{fig:figure}
 \end{figure}
 
-Além de tabelas, como a apresentada em \ref{tab:table}.
-
-\begin{table}[htbp]
-    \caption{Exemplo de tabela}
-    \label{tab:table}
-    \centering
-    \begin{tabular}{cc}
-        \toprule
-        \textbf{Column 1} & \textbf{Column 2} \\
-        \midrule
-        Data 1            & Data 2            \\
-        Data 3            & Data 4            \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+Outro resultado que encontramos foi que mesmo treinando no ambiente 6x6 o treinamento funcionou no ambiente 8x8. Isso se deve ao fato de que como o ambiente não é totalmente observável o agente aprendeu a procurar os objetos para chegar em seu objetivo.
 
 \section{Considerações finais}
 
-\taustart{O} objetivo deste trabalho foi ...
-
+\taustart{O} objetivo deste trabalho foi explorar o ambiente minigrid-doorkey, que possui características únicas, como o fato de ter um espaço de observação limitado e também depender de aleatoriedade, já que originalmente o agente só iria receber recompensa caso chegasse no final. Ao longo do desenvolvimento foi possível modificar o ambiente para que o agente tenha mais oportunidades de aprendizado, o que permitiu, através do algoritmo PPO, o agente aprender como chegar no objetivo.
 \addcontentsline{toc}{section}{References}
 \printbibliography
 

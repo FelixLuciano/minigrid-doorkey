@@ -23,7 +23,7 @@ for i in range(5):
     env = PositionBonus(env)
 
     model = DQN(
-        policy="CnnPolicy", 
+        policy="MlpPolicy", 
         env=env, 
         policy_kwargs=policy_kwargs, 
         verbose=0,
