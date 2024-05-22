@@ -1,0 +1,6 @@
+minigrid
+stable-baselines3[extra]
+gymnasium
+pandas
+seaborn
+matplotlib
