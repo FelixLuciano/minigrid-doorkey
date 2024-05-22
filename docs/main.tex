@@ -165,12 +165,6 @@ O espaço de observação é descrito por um dicionário contendo a direção do
     \end{tabular}
 \end{table}
 
-\begin{itemize}
-    \item \textbf{ID do objeto} contido no latrilho atual, descrito como na tabela  \ref{tab:objects};
-    \item \textbf{ID da cor} do latrilho atual, descrito como na tabela  \ref{tab:colors};
-    \item \textbf{ID do estado} do objeto condito no latrilho atual, descrito como na tabela  \ref{tab:states}.
-\end{itemize}
-
 \begin{table}[htbp]
     \caption{Espaço de ação}
     \label{tab:actions}
@@ -190,6 +184,12 @@ O espaço de observação é descrito por um dicionário contendo a direção do
     \end{tabular}
 \end{table}
 
+\begin{itemize}
+    \item \textbf{ID do objeto} contido no latrilho atual, descrito como na tabela  \ref{tab:objects};
+    \item \textbf{ID da cor} do latrilho atual, descrito como na tabela  \ref{tab:colors};
+    \item \textbf{ID do estado} do objeto condito no latrilho atual, descrito como na tabela  \ref{tab:states}.
+\end{itemize}
+
 O espaço de ação é discreto com ações de movimento e poucas interações com elementos do ambiente. O espaço de ação é implementado conforme especificado na tabela \ref{tab:actions}.
 
 A função de recompensa é definida no domínio contínuo do intervalo \([0, 1]\) e proporcional a razão entre o número de passos e o número máximo de passos permitido para o agente atingir o estado final com sucesso, caso contrário a recompensa é anulada. Esta razão é definida com maior rigor na equação \ref{ec:equation}.
@@ -206,23 +206,44 @@ A função de recompensa é definida no domínio contínuo do intervalo \([0, 1]
 
 \section{Método}
 
-Para encontrar os resultados serão realizados treinamentos com diferentes números de episódios para cada algoritmo. Também será realizada a modificação do reward para que o agente consiga o reward não só chegando ao final mas realizando as ações necessárias para chegar lá, comparando os resultados.
+%Para encontrar os resultados serão realizados treinamentos com diferentes números de episódios para cada algoritmo. Também será realizada a modificação do reward para que o agente consiga o reward não só chegando ao final mas realizando as ações necessárias para chegar lá, comparando os resultados.
+
+Para conseguir comparar bem o desempenho dos dois algoritmos no ambiente, será analiado o crescimento da recompensa de um agente treinado em cada um desses algoritmos, utilizando a MlpPolicy, e 200000 passos de aprendizado. O ambiente utilizado dentro do Minigrid - Doorkey será o "MiniGrid-DoorKey-6x6-v0", que já oferece uma complexidade satisfatória para o agente. Mas, para obter uma comparação satisfatória, é necessário primeiramente alterar a função recompensa de modo a ficar mais nítido o aprendizado de cada agente.
 
 \begin{info}[frametitle=Atenção]
     Para treinamento será utilizado a biblioteca \textit{stable baselines}.
 \end{info}
 
-Também é importante destacar a implementação utilizada. Se foi uma implementação feita do zero pela equipe ou se foi utilizada uma biblioteca. Se a equipe optou por utilizar uma biblioteca é importante citar a biblioteca. Em ambos os casos, se a equipe fez a sua própria implementação ou se utilizou uma biblioteca, é importante \textbf{citar o repositório} onde os scripts se encontram.
+Inicialmente, para conseguir utilizar a biblioteca \textit{stable baselines}, foi necessário utilizar do ImgObsWrapper, que é um Wrapper específico do ambiente, que transforma a observação do enviroment em um formato de Imagem, próprio para interpretação da biblioteca. Junto a isso, foi necessário utilizar dois outros Wrappers que alterassem a recompensa entregue ao agente para que o treinamento pudesse ser realizado e analisado. Desses, um é o PositionBonusWrapper, que também é específico do ambiente Minigrid e permite a recompensa da exploração do agente, o outro é um Wrapper original feito pela equipe de forma para recompensar as ações intermediárias antes de chegar ao objetivo final.
 
-Nesta seção também é importante descrever quais são os principais \textbf{indicadores} que a equipe está avaliando. Isto está diretamente relacionado com a função que pretende-se otimizar - que foi descrita na introdução deste relatório.
+O Wrapper orignal implementado tem o seguinte funcionamento:
+\lstinputlisting[caption=Código do Wrapper, language=python]{assets/CustomRewardWrapper.py}
 
-Eventualmente, a equipe deseja adicionar algum trecho de código nesta parte do relatório. Isto pode ser feito da seguinte maneira:
+Agora, a função recompensa é definida no domínio contínuo do intevalo [-0.25, 3], levando em conta as ações pegar a chave e destrancar a porta, além de punir o número de passos do agente, isso na sua primeira parcela. O PositionBonusWrapper provê uma segunda parcela inversamente proporcional à raiz do número de vezes que uma determinada posição foi visitada. O cálculo da recompensa final pode ser visto nas esquações \ref{ec:equation2} e \ref{ec:equation3}.
 
-\lstinputlisting[caption=Exemplo de código em Python, language=python]{assets/example.py}
+\begin{equation}
+    \label{ec:equation2}
+    \text{NEW REWARD} =
+    \begin{dcases}
+        0.5,                        & \text{Pegar a chave ou destrancar a porta}     \\
+        -0.25,                      & \text{Caso feche uma porta}                       \\
+        2,                          & \text{Ao chegar ao destino final}
+    \end{dcases}
+\end{equation}
+
+\begin{equation}
+    \label{ec:equation3}
+   \text{NEW REWARD} +\!= \frac{1}{\sqrt{\text{\#VISITAS}}}
+\end{equation}
+
+Após a configuração dos rewards, vem a etapa de treinamento dos agentes. O setup é feito da seguinte maneira para o agente DQN:
+\lstinputlisting[caption=Modelo DQN, language=python]{assets/train_dqn.py}
+E paara o modelo PPO:
+\lstinputlisting[caption=Modelo PPO, language=python]{assets/train_ppo.py}
 
 \section{Resultados}
 
-O objetido desta pararte do relatório é descrever os resultados obtidos. Durante a disciplina nós vimos as principais técnicas para mostrar o aprendizado do agente e o desempenho do mesmo para realizar a tarefa. Esta seção precisa mostrar dados quantitativos que descrevem isto: a curva de aprendizagem e as validações feitas depois do treinamento.
+O objetido desta parrte do relatório é descrever os resultados obtidos. Durante a disciplina nós vimos as principais técnicas para mostrar o aprendizado do agente e o desempenho do mesmo para realizar a tarefa. Esta seção precisa mostrar dados quantitativos que descrevem isto: a curva de aprendizagem e as validações feitas depois do treinamento.
 
 Para apresentar os resultados obtidos com certeza a equipe terá que fazer uso de figuras, como a apresenta em \ref{fig:figure}.
 
